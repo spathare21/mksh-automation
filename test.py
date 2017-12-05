@@ -14,6 +14,7 @@ class Base:
 
     # Initializing test environment
     def setup(self):
+        log.info("Setup SJIS environment")
         os.system("localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS")
         os.system("LANG=ja_JP.SJIS")
 
@@ -52,10 +53,9 @@ class Base:
     # This function will execute the testcase
     def testcase_execute(self,testcase_name):
 
-        log.info( testcase_name+ " execution started")
-
+        log.info("collecting data from json file ")
         testCaseData = self.readJsonFile(self.jsonFilePath)
-        log.info("data collected from json file ")
+        log.info(testcase_name + " '" + testCaseData[str(testcase_name)]["testname"] +"' execution started")
 
         for key,script in testCaseData[str(testcase_name)]["script"].items():
             self.writeToFile(key, script)
@@ -67,10 +67,10 @@ class Base:
         log.info("Expected output for '"+ testcase_name + "' is '" + expected_op_decode +"'")
 
         if lang != expected_op_decode:
-            print(testcase_name+ " failed")
+            print(testcase_name+ " : "+testCaseData[str(testcase_name)]["testname"]+ " failed")
             log.info(testcase_name+" failed due to mismatch in actual o/p: \n'" + lang + "' and expected o/p: \n'"+ expected_op_decode +"'")
         else:
-            print(testcase_name+" passed")
+            print(testcase_name+ " : "+testCaseData[str(testcase_name)]["testname"]+ " passed")
             log.info(testcase_name+" passed succeffully")
 
 

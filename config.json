@@ -1,5 +1,6 @@
 {
   "testcase1": {
+    "testname": "echo multibyte SJIS character",
     "script": {
       "testcase1.mksh":"#!/bin/mksh\necho 表"
     },
@@ -8,6 +9,7 @@
   },
 
   "testcase2": {
+    "testname": "export multibyte SJIS character",
     "script": {
       "testcase2.mksh":"#!/usr/bin/mksh\nexport test=\"本\",\"マ\"\necho $test"
     },
@@ -16,6 +18,7 @@
   },
 
   "testcase3": {
+    "testname": "read multibyte SJIS character from a file",
     "script": {
       "testcase3.mksh": "#!/usr/bin/mksh\nwhile read line\ndo\necho $line\ndone",
       "test2": "表\n表\ntest\n"
