@@ -1,0 +1,27 @@
+{
+  "testcase1": {
+    "script": {
+      "testcase1.mksh":"#!/bin/mksh\necho 表"
+    },
+    "cmd":"bash testcase1.mksh",
+    "output": "表"
+  },
+
+  "testcase2": {
+    "script": {
+      "testcase2.mksh":"#!/usr/bin/mksh\nexport test=\"本\",\"マ\"\necho $test"
+    },
+    "cmd":"bash testcase2.mksh",
+    "output": "本,マ"
+  },
+
+  "testcase3": {
+    "script": {
+      "testcase3.mksh": "#!/usr/bin/mksh\nwhile read line\ndo\necho $line\ndone",
+      "test2": "表\n表\ntest\n"
+    },
+    "cmd":"bash testcase3.mksh < test2",
+    "output": "表\n表\ntest"
+  }
+
+}
