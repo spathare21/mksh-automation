@@ -52,9 +52,9 @@
     "script": {
     },
     "cmd": [
-      "cat >> append1.txt <<< '#!/bin/mksh\n本,マ'",
-      "cat >> append1.txt <<< '表\nチ\n―ソЫ噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭'",
-      "cat append1.txt"
+      "cat >> append.txt <<< '#!/bin/mksh\n本,マ'",
+      "cat >> append.txt <<< '表\nチ\n―ソЫ噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭'",
+      "cat append.txt"
     ],
     "output": "#!/bin/mksh\n本,マ\n表\nチ\n―ソЫ噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭"
   },
@@ -75,12 +75,12 @@
     "cmd": [
       "mkdir ーゼЪ閏骸擬啓梗纂充深措 && echo $?",
       "cd ーゼЪ閏骸擬啓梗纂充深措 && echo $?",
-      " touch test",
-      "echo 'Hello World!'' >> test",
-      "cat $HOME/ーゼЪ閏骸擬啓梗纂充深措/test",
-      "rm -rf $HOME/ーゼЪ閏骸擬啓梗纂充深措 && echo $?"
+      "touch ーゼЪ閏骸擬啓梗纂充深措/test",
+      "echo 'Hello World!' >> ーゼЪ閏骸擬啓梗纂充深措/test",
+      "cat ーゼЪ閏骸擬啓梗纂充深措/test",
+      "rm -rf ーゼЪ閏骸擬啓梗纂充深措 && echo $?"
     ],
-    "output": "0"
+    "output": ["0","0","","","Hello World!","0"]
   }
 
 }

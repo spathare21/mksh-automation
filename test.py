@@ -8,9 +8,14 @@ import logging as log
 class Base:
 
     def __init__(self):
+        try:
+            os.remove("append.txt")
+        except OSError:
+            pass
         log.basicConfig(filename='mksh.log', filemode='w', level=log.DEBUG)
         #self.setup()
         self.jsonFilePath="config.json"
+
 
     # Initializing test environment
     def setup(self):
@@ -50,6 +55,44 @@ class Base:
         log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("utf-8") +"'")
         return expected_op_encode.decode("utf-8")
 
+    def execute_command(self, cmd, testcase_name):
+        output_list = list()
+        if isinstance(cmd, str):
+            log.info("Executing the command '" + cmd + "' for " + testcase_name)
+            output_list.append(subprocess.getoutput(cmd))
+        elif isinstance(cmd,list):
+            for i in cmd:
+                log.info("Executing the command '" + i + "' for " + testcase_name)
+                output_list.append(subprocess.getoutput(i))
+        else:
+            log.info("Invalid command parameter passed")
+            return False
+
+        return output_list
+    #Verify actual output and expected output
+    def verify_output(self, actual_output, expected_output):
+        if isinstance(expected_output, str):
+           #expected_output_list = expected_output.split()
+
+            expected_op_decode = self.getUTFString(expected_output)
+            print(actual_output)
+            print(expected_op_decode)
+            if actual_output[-1] != expected_op_decode:
+                return False
+            else:
+                return True
+        elif isinstance(expected_output, list):
+            for i in range(len(actual_output)):
+                expected_op_decode = self.getUTFString(expected_output[i])
+
+                if actual_output[i] != expected_op_decode:
+                    return False
+                else:
+                    return True
+        else:
+            print("Invalid expected output type")
+            return False
+
     # This function will execute the testcase
     def testcase_execute(self,testcase_name):
 
@@ -59,26 +102,12 @@ class Base:
 
         for key,script in testCaseData[str(testcase_name)]["script"].items():
             self.writeToFile(key, script)
-        # execute command
-        if isinstance(testCaseData[str(testcase_name)]["cmd"],str):
-            log.info("Executing the command '" + testCaseData[str(testcase_name)]["cmd"] + "' for " + testcase_name)
-            lang = subprocess.getoutput(testCaseData[str(testcase_name)]["cmd"])
-        elif isinstance(testCaseData[str(testcase_name)]["cmd"],list):
-            for i in testCaseData[str(testcase_name)]["cmd"]:
-                log.info("Executing the command '" + i + "' for " + testcase_name)
-                lang = subprocess.getoutput(i)
-        else:
-            log.info("Invalid command parameter passed")
 
-        expected_op_decode = self.getUTFString(testCaseData[str(testcase_name)]["output"])
-        log.info("Expected output for '"+ testcase_name + "' is '" + expected_op_decode +"'")
-
-        if lang != expected_op_decode:
-            print(testcase_name+ " : "+testCaseData[str(testcase_name)]["testname"]+ " failed")
-            log.info(testcase_name+" failed due to mismatch in actual o/p: \n'" + lang + "' and expected o/p: \n'"+ expected_op_decode +"'")
+        cmd_output = self.execute_command(testCaseData[str(testcase_name)]["cmd"], testcase_name)
+        if self.verify_output(cmd_output, testCaseData[str(testcase_name)]["output"]):
+            print("testcase pass")
         else:
-            print(testcase_name+ " : "+testCaseData[str(testcase_name)]["testname"]+ " passed")
-            log.info(testcase_name+" passed succeffully")
+            print("test case failed")
 
 
     def All(self):
@@ -91,6 +120,7 @@ class Base:
         self.testcase_execute("testcase5")
         self.testcase_execute("testcase6")
         self.testcase_execute("testcase7")
+        self.testcase_execute("testcase8")
 
 
 if __name__ == "__main__":
