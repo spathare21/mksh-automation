@@ -1,6 +1,6 @@
 # mksh-automation
 
-###How to use
+### How to use
 - Install python3 on your system.
 - Clone this repo/project
   - git clone https://github.com/spathare21/mksh-automation.git
