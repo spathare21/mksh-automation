@@ -55,6 +55,7 @@ class Base:
         log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("utf-8") +"'")
         return expected_op_encode.decode("utf-8")
 
+    # Execute commands
     def execute_command(self, cmd, testcase_name):
         output_list = list()
         if isinstance(cmd, str):
@@ -69,14 +70,12 @@ class Base:
             return False
 
         return output_list
+
     #Verify actual output and expected output
     def verify_output(self, actual_output, expected_output):
         if isinstance(expected_output, str):
-           #expected_output_list = expected_output.split()
-
             expected_op_decode = self.getUTFString(expected_output)
-            print(actual_output)
-            print(expected_op_decode)
+            log.info("\nActual output: "+ str(actual_output) + "\nExpected output: "+ str(expected_output))
             if actual_output[-1] != expected_op_decode:
                 return False
             else:
@@ -84,7 +83,7 @@ class Base:
         elif isinstance(expected_output, list):
             for i in range(len(actual_output)):
                 expected_op_decode = self.getUTFString(expected_output[i])
-
+                log.info("\nActual output: " + str(actual_output) + "\nExpected output: " + str(expected_output))
                 if actual_output[i] != expected_op_decode:
                     return False
                 else:
@@ -95,7 +94,6 @@ class Base:
 
     # This function will execute the testcase
     def testcase_execute(self,testcase_name):
-
         log.info("collecting data from json file ")
         testCaseData = self.readJsonFile(self.jsonFilePath)
         log.info(testcase_name + " '" + testCaseData[str(testcase_name)]["testname"] +"' execution started")
@@ -105,14 +103,16 @@ class Base:
 
         cmd_output = self.execute_command(testCaseData[str(testcase_name)]["cmd"], testcase_name)
         if self.verify_output(cmd_output, testCaseData[str(testcase_name)]["output"]):
-            print("testcase pass")
+            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
+            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
         else:
-            print("test case failed")
+            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed")
+            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed")
 
 
     def All(self):
         print("Running all script")
-        log.info("running all scripts/testcases")
+        log.info("Running all scripts/testcases")
         self.testcase_execute("testcase1")
         self.testcase_execute("testcase2")
         self.testcase_execute("testcase3")
