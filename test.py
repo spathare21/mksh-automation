@@ -59,9 +59,16 @@ class Base:
 
         for key,script in testCaseData[str(testcase_name)]["script"].items():
             self.writeToFile(key, script)
-
-        log.info("Executing the command '"+ testCaseData[str(testcase_name)]["cmd"] +"' for "+ testcase_name)
-        lang = subprocess.getoutput(testCaseData[str(testcase_name)]["cmd"])
+        # execute command
+        if isinstance(testCaseData[str(testcase_name)]["cmd"],str):
+            log.info("Executing the command '" + testCaseData[str(testcase_name)]["cmd"] + "' for " + testcase_name)
+            lang = subprocess.getoutput(testCaseData[str(testcase_name)]["cmd"])
+        elif isinstance(testCaseData[str(testcase_name)]["cmd"],list):
+            for i in testCaseData[str(testcase_name)]["cmd"]:
+                log.info("Executing the command '" + i + "' for " + testcase_name)
+                lang = subprocess.getoutput(i)
+        else:
+            log.info("Invalid command parameter passed")
 
         expected_op_decode = self.getUTFString(testCaseData[str(testcase_name)]["output"])
         log.info("Expected output for '"+ testcase_name + "' is '" + expected_op_decode +"'")
@@ -80,6 +87,10 @@ class Base:
         self.testcase_execute("testcase1")
         self.testcase_execute("testcase2")
         self.testcase_execute("testcase3")
+        self.testcase_execute("testcase4")
+        self.testcase_execute("testcase5")
+        self.testcase_execute("testcase6")
+        self.testcase_execute("testcase7")
 
 
 if __name__ == "__main__":

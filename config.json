@@ -23,8 +23,64 @@
       "testcase3.mksh": "#!/usr/bin/mksh\nwhile read line\ndo\necho $line\ndone",
       "test2": "表\n表\ntest\n"
     },
-    "cmd":"bash testcase3.mksh < test2",
+    "cmd": "bash testcase3.mksh < test2",
     "output": "表\n表\ntest"
+  },
+
+  "testcase4": {
+    "testname": "The language configuration specified in a script should be retained",
+    "script": {
+      "langconfig.sh":"#!/usr/bin/mksh -x\nexport 'LANG=ja_JP.WINDOWS-31J'\necho \"本\",\"マ\""
+    },
+    "cmd": "bash langconfig.sh",
+    "output": "本,マ"
+  },
+
+  "testcase5": {
+    "testname": "redirecting multibyte SJIS character as output using '>'",
+    "script": {
+    },
+    "cmd": [
+      "cat > rd1 <<< '#!/bin/mksh\nｦｧｨｩｪｫｬ\n表\nチ\n本,マ'",
+      "cat rd1"
+    ],
+    "output": "#!/bin/mksh\nｦｧｨｩｪｫｬ\n表\nチ\n本,マ"
+  },
+
+  "testcase6": {
+    "testname": "appending multibyte SJIS character using '>>'",
+    "script": {
+    },
+    "cmd": [
+      "cat >> append1.txt <<< '#!/bin/mksh\n本,マ'",
+      "cat >> append1.txt <<< '表\nチ\n―ソЫ噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭'",
+      "cat append1.txt"
+    ],
+    "output": "#!/bin/mksh\n本,マ\n表\nチ\n―ソЫ噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭"
+  },
+
+  "testcase7": {
+    "testname": "redirecting multibyte SJIS character using '<<' (here document)",
+    "script": {
+      "test7.mksh": "#!/usr/bin/mksh\ncat << EOF\nｱｲｳｴｵ\nァА\nーゼ\n表ソ\n‐ゾ\n／タ\n＼ダ\n～Ａ\n＋ボ\n－ポ\n±マ\n×ミ\nEOF"
+    },
+    "cmd": "bash test7.mksh",
+    "output": "ｱｲｳｴｵ\nァА\nーゼ\n表ソ\n‐ゾ\n／タ\n＼ダ\n～Ａ\n＋ボ\n－ポ\n±マ\n×ミ"
+  },
+
+  "testcase8": {
+    "testname": "File and/or directory operations with SJIS multi byte characters",
+    "script": {
+    },
+    "cmd": [
+      "mkdir ーゼЪ閏骸擬啓梗纂充深措 && echo $?",
+      "cd ーゼЪ閏骸擬啓梗纂充深措 && echo $?",
+      " touch test",
+      "echo 'Hello World!'' >> test",
+      "cat $HOME/ーゼЪ閏骸擬啓梗纂充深措/test",
+      "rm -rf $HOME/ーゼЪ閏骸擬啓梗纂充深措 && echo $?"
+    ],
+    "output": "0"
   }
 
 }
