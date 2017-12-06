@@ -3,7 +3,7 @@
 ### How to use
 - Install python3 on your system.
 - Clone this repo/project
-  - git clone https://github.com/spathare21/mksh-automation.git
+  - e.g git clone https://github.com/spathare21/mksh-automation.git
 - cd mksh-automation/   
 - Run following command to get help
   - python3 test.py --help

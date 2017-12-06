@@ -13,7 +13,7 @@ class Base:
         except OSError:
             pass
         log.basicConfig(filename='mksh.log', filemode='w', level=log.DEBUG)
-        #self.setup()
+        self.setup()
         self.jsonFilePath="config.json"
 
 
