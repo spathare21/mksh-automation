@@ -28,15 +28,15 @@ class Base:
         lang = subprocess.getoutput("echo $LANG")
         log.info("Check ja_jp language set")
         if lang != "ja_JP.SJIS":
-            print("error")
-            log.debug("error while setting language Lang=ja_Jp.SJIS")
+            print("error unable to set Lang=ja_JP.SJIS")
+            log.debug("error while setting language Lang=ja_JP.SJIS")
             sys.exit()
         else:
             log.info("LANGja_JP set successfully")
 
     # read json data from file
     def readJsonFile(self, filename):
-        with open(filename, 'r') as f:
+        with open(filename, 'r',  encoding="utf-8") as f:
             log.info("reading testcase data from json file '"+ filename +"'")
             data = json.load(f)
         return data
