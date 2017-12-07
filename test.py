@@ -32,7 +32,7 @@ class Base:
             log.debug("error while setting language Lang=ja_JP.SJIS")
             sys.exit()
         else:
-            log.info("LANGja_JP set successfully")
+            log.info("LANG=ja_JP.SJIS set successfully")
 
     # read json data from file
     def readJsonFile(self, filename):
@@ -52,8 +52,8 @@ class Base:
     # Convert string into utf-8 string
     def getUTFString(self, character):
         expected_op_encode = character.encode("utf-8")
-        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("utf-8") +"'")
-        return expected_op_encode.decode("utf-8")
+        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("sjis") +"'")
+        return expected_op_encode.decode("sjis")
 
     # Execute commands
     def execute_command(self, cmd, testcase_name):
@@ -75,7 +75,7 @@ class Base:
     def verify_output(self, actual_output, expected_output):
         if isinstance(expected_output, str):
             expected_op_decode = self.getUTFString(expected_output)
-            log.info("\nActual output: "+ str(actual_output) + "\nExpected output: "+ str(expected_output))
+            log.info("\nActual output: "+ str(actual_output) + "\nExpected output: "+ str(expected_op_decode))
             if actual_output[-1] != expected_op_decode:
                 return False
             else:
@@ -83,7 +83,7 @@ class Base:
         elif isinstance(expected_output, list):
             for i in range(len(actual_output)):
                 expected_op_decode = self.getUTFString(expected_output[i])
-                log.info("\nActual output: " + str(actual_output) + "\nExpected output: " + str(expected_output))
+                log.info("\nActual output: " + str(actual_output) + "\nExpected output: " + str(expected_op_decode))
                 if actual_output[i] != expected_op_decode:
                     return False
                 else:
