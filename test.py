@@ -29,15 +29,15 @@ class Base:
         lang = subprocess.getoutput("echo $LANG")
         log.info("Check ja_jp language set")
         if lang != "ja_JP.SJIS":
-            print("error unable to set Lang=ja_JP.SJIS")
-            log.debug("error while setting language Lang=ja_JP.SJIS")
+            print("error")
+            log.debug("error while setting language Lang=ja_Jp.SJIS")
             sys.exit()
         else:
-            log.info("LANG=ja_JP.SJIS set successfully")
+            log.info("LANGja_JP set successfully")
 
     # read json data from file
     def readJsonFile(self, filename):
-        with open(filename, 'r',  encoding="utf-8") as f:
+        with open(filename, 'r', encoding="utf-8") as f:
             log.info("reading testcase data from json file '"+ filename +"'")
             data = json.load(f)
         return data
@@ -51,14 +51,15 @@ class Base:
         script_file.close()
         with codecs.open(filename, 'r', encoding="utf-8") as in_f:
             unicode_content = in_f.read()
+
         with codecs.open(filename, 'w', encoding='sjis') as out_f:
             out_f.write(unicode_content)
 
     # Convert string into utf-8 string
     def getUTFString(self, character):
         expected_op_encode = character.encode("utf-8")
-        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("sjis") +"'")
-        return expected_op_encode.decode("sjis")
+        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("utf-8") +"'")
+        return expected_op_encode.decode("utf-8")
 
     # Execute commands
     def execute_command(self, cmd, testcase_name):
@@ -80,7 +81,7 @@ class Base:
     def verify_output(self, actual_output, expected_output):
         if isinstance(expected_output, str):
             expected_op_decode = self.getUTFString(expected_output)
-            log.info("\nActual output: "+ str(actual_output) + "\nExpected output: "+ str(expected_op_decode))
+            log.info("\nActual output: "+ str(actual_output) + "\nExpected output: "+ str(expected_output))
             if actual_output[-1] != expected_op_decode:
                 return False
             else:
@@ -88,7 +89,7 @@ class Base:
         elif isinstance(expected_output, list):
             for i in range(len(actual_output)):
                 expected_op_decode = self.getUTFString(expected_output[i])
-                log.info("\nActual output: " + str(actual_output) + "\nExpected output: " + str(expected_op_decode))
+                log.info("\nActual output: " + str(actual_output) + "\nExpected output: " + str(expected_output))
                 if actual_output[i] != expected_op_decode:
                     return False
                 else:
@@ -101,7 +102,7 @@ class Base:
     def testcase_execute(self,testcase_name):
         log.info("collecting data from json file ")
         testCaseData = self.readJsonFile(self.jsonFilePath)
-        print("data return")
+
         log.info(testcase_name + " '" + testCaseData[str(testcase_name)]["testname"] +"' execution started")
 
         for key,script in testCaseData[str(testcase_name)]["script"].items():
