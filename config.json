@@ -11,9 +11,9 @@
   "testcase2": {
     "testname": "export multibyte SJIS character",
     "script": {
-      "testcase2.mksh":"#!/usr/bin/mksh\nexport test=\"本\",\"マ\"\necho $test"
+      "testcase2.sh":"#!/usr/bin/mksh\nexport test=\"本\",\"マ\"\necho $test"
     },
-    "cmd":"bash testcase2.mksh",
+    "cmd":"bash testcase2.sh",
     "output": "本,マ"
   },
 

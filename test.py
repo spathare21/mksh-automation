@@ -4,6 +4,7 @@ import argparse
 import os
 import json
 import logging as log
+import codecs
 
 class Base:
 
@@ -48,6 +49,10 @@ class Base:
         script_file.write(data)
         log.info("Data writen succeefully in file")
         script_file.close()
+        with codecs.open(filename, 'r', encoding="utf-8") as in_f:
+            unicode_content = in_f.read()
+        with codecs.open(filename, 'w', encoding='sjis') as out_f:
+            out_f.write(unicode_content)
 
     # Convert string into utf-8 string
     def getUTFString(self, character):
@@ -96,6 +101,7 @@ class Base:
     def testcase_execute(self,testcase_name):
         log.info("collecting data from json file ")
         testCaseData = self.readJsonFile(self.jsonFilePath)
+        print("data return")
         log.info(testcase_name + " '" + testCaseData[str(testcase_name)]["testname"] +"' execution started")
 
         for key,script in testCaseData[str(testcase_name)]["script"].items():
