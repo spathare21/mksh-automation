@@ -4,7 +4,6 @@ import argparse
 import os
 import json
 import logging as log
-import codecs
 
 class Base:
 
@@ -21,8 +20,10 @@ class Base:
     # Initializing test environment
     def setup(self):
         log.info("Setup SJIS environment")
-        os.system("localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS")
-        os.system("LANG=ja_JP.SJIS")
+        p = subprocess.Popen("localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS",shell=True, env=os.environ, stdout=subprocess.PIPE)
+        out, err = p.communicate()
+        os.environ['LANG'] = 'ja_JP.SJIS'
+        print(os.environ['LANG'])
 
         log.info("ja_JP.SJIS encoding compiled and set")
 
@@ -49,28 +50,29 @@ class Base:
         script_file.write(data)
         log.info("Data writen succeefully in file")
         script_file.close()
-        with codecs.open(filename, 'r', encoding="utf-8") as in_f:
-            unicode_content = in_f.read()
-
-        with codecs.open(filename, 'w', encoding='sjis') as out_f:
-            out_f.write(unicode_content)
 
     # Convert string into utf-8 string
     def getUTFString(self, character):
-        expected_op_encode = character.encode("utf-8")
-        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("utf-8") +"'")
-        return expected_op_encode.decode("utf-8")
+        expected_op_encode = character.encode("sjis")
+        log.info("Converted string to utf-8 format '"+ expected_op_encode.decode("sjis") +"'")
+        return expected_op_encode.decode("sjis")
 
     # Execute commands
     def execute_command(self, cmd, testcase_name):
         output_list = list()
         if isinstance(cmd, str):
             log.info("Executing the command '" + cmd + "' for " + testcase_name)
-            output_list.append(subprocess.getoutput(cmd))
+            p = subprocess.Popen(cmd, shell=True, env=os.environ, stdout=subprocess.PIPE)
+            out, err = p.communicate()
+            print(out.decode('sjis'))
+            output_list.append(out.decode('sjis').strip())
         elif isinstance(cmd,list):
             for i in cmd:
                 log.info("Executing the command '" + i + "' for " + testcase_name)
-                output_list.append(subprocess.getoutput(i))
+                p = subprocess.Popen(i, shell=True, env=os.environ, stdout=subprocess.PIPE)
+                out, err = p.communicate()
+                print(out.decode('utf-8'))
+                output_list.append(out.decode('utf-8').strip())
         else:
             log.info("Invalid command parameter passed")
             return False
