@@ -23,7 +23,7 @@ class Base:
         p = subprocess.Popen("localedef -f SHIFT_JIS -i ja_JP ja_JP.SJIS",shell=True, env=os.environ, stdout=subprocess.PIPE)
         out, err = p.communicate()
         os.environ['LANG'] = 'ja_JP.SJIS'
-        print(os.environ['LANG'])
+        print("Env var LANG set : " + os.environ['LANG'])
 
         log.info("ja_JP.SJIS encoding compiled and set")
 
@@ -34,7 +34,7 @@ class Base:
             log.debug("error while setting language Lang=ja_Jp.SJIS")
             sys.exit()
         else:
-            log.info("LANGja_JP set successfully")
+            log.info("LANG " + os.environ['LANG'] + " set successfully")
 
     # read json data from file
     def readJsonFile(self, filename):
@@ -64,14 +64,12 @@ class Base:
             log.info("Executing the command '" + cmd + "' for " + testcase_name)
             p = subprocess.Popen(cmd, shell=True, env=os.environ, stdout=subprocess.PIPE)
             out, err = p.communicate()
-            print(out.decode('sjis'))
-            output_list.append(out.decode('sjis').strip())
+            output_list.append(out.decode('utf-8').strip())
         elif isinstance(cmd,list):
             for i in cmd:
                 log.info("Executing the command '" + i + "' for " + testcase_name)
                 p = subprocess.Popen(i, shell=True, env=os.environ, stdout=subprocess.PIPE)
                 out, err = p.communicate()
-                print(out.decode('utf-8'))
                 output_list.append(out.decode('utf-8').strip())
         else:
             log.info("Invalid command parameter passed")
@@ -111,6 +109,8 @@ class Base:
             self.writeToFile(key, script)
 
         cmd_output = self.execute_command(testCaseData[str(testcase_name)]["cmd"], testcase_name)
+        print("after command executed")
+        print(cmd_output)
         if self.verify_output(cmd_output, testCaseData[str(testcase_name)]["output"]):
             print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
             log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
