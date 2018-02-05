@@ -110,14 +110,17 @@ class Base:
             self.writeToFile(key, script)
 
         cmd_output = self.execute_command(testCaseData[str(testcase_name)]["cmd"], testcase_name)
-        print("after command executed")
-        print(cmd_output)
+
         if self.verify_output(cmd_output, testCaseData[str(testcase_name)]["output"]):
-            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
-            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully")
+            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully"
+                  +"\n----------------------------------------------------------------------------------------------\n\n")
+            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " - passed succeffully"
+                     +"\n----------------------------------------------------------------------------------------------\n\n")
         else:
-            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed")
-            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed")
+            print(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed"
+                  +"\n----------------------------------------------------------------------------------------------\n\n")
+            log.info(testcase_name + " : " + testCaseData[str(testcase_name)]["testname"] + " failed"
+                     +"\n----------------------------------------------------------------------------------------------\n\n")
 
 
     def All(self):
